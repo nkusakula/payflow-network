@@ -1,0 +1,22 @@
+{
+  "name": "payflow-network",
+  "version": "1.0.0",
+  "description": "PayFlow Network – Payment Network Operations Platform",
+  "private": true,
+  "workspaces": [
+    "api",
+    "frontend"
+  ],
+  "scripts": {
+    "dev": "concurrently \"npm run dev:api\" \"npm run dev:frontend\"",
+    "dev:api": "npm run dev --workspace=api",
+    "dev:frontend": "npm run dev --workspace=frontend",
+    "build": "npm run build --workspace=api && npm run build --workspace=frontend",
+    "test": "npm run test --workspace=api",
+    "test:api": "npm run test --workspace=api",
+    "lint": "npm run lint --workspace=frontend"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  }
+}
