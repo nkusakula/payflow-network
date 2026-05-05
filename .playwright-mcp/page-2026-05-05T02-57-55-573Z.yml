@@ -1,0 +1,188 @@
+- generic [ref=e3]:
+  - navigation [ref=e4]:
+    - generic [ref=e5]:
+      - generic [ref=e6]:
+        - link "PF PayFlow Network" [ref=e7] [cursor=pointer]:
+          - /url: /
+          - generic [ref=e8]: PF
+          - text: PayFlow Network
+        - generic [ref=e18]:
+          - button "Toggle theme" [ref=e19] [cursor=pointer]:
+            - img [ref=e20]
+          - button "Toggle menu" [active] [ref=e186] [cursor=pointer]:
+            - img [ref=e187]
+      - generic [ref=e189]:
+        - link "Dashboard" [ref=e190] [cursor=pointer]:
+          - /url: /
+        - link "Transactions" [ref=e191] [cursor=pointer]:
+          - /url: /transactions
+        - link "Merchants" [ref=e192] [cursor=pointer]:
+          - /url: /merchants
+        - link "Cardholders" [ref=e193] [cursor=pointer]:
+          - /url: /cardholders
+        - link "Cards" [ref=e194] [cursor=pointer]:
+          - /url: /cards
+        - link "Issuers" [ref=e195] [cursor=pointer]:
+          - /url: /issuers
+        - link "Disputes" [ref=e196] [cursor=pointer]:
+          - /url: /disputes
+        - link "Settlements" [ref=e197] [cursor=pointer]:
+          - /url: /settlements
+  - main [ref=e22]:
+    - generic [ref=e23]:
+      - generic [ref=e27]:
+        - generic [ref=e28]:
+          - generic [ref=e29]: Network healthy
+          - heading "PayFlow Network" [level=1] [ref=e31]
+          - paragraph [ref=e32]: Payment Network Operations Platform
+          - paragraph [ref=e33]: Monitor transactions, manage disputes, oversee issuer settlements, and maintain merchant relationships — all in one place.
+        - generic [ref=e34]:
+          - link "View Transactions" [ref=e35] [cursor=pointer]:
+            - /url: /transactions
+          - link "Manage Disputes" [ref=e36] [cursor=pointer]:
+            - /url: /disputes
+      - generic [ref=e37]:
+        - generic [ref=e38]:
+          - generic [ref=e39]: Gross Volume
+          - generic [ref=e40]: $0
+          - generic [ref=e41]: USD-eq · 0 txns
+        - generic [ref=e42]:
+          - generic [ref=e43]: Approval Rate
+          - generic [ref=e44]: 0.0%
+        - generic [ref=e46]:
+          - generic [ref=e47]: Avg Ticket
+          - generic [ref=e48]: $0
+          - generic [ref=e49]: Excludes declines & reversals
+        - link "Open Disputes 0 $0 exposure" [ref=e50] [cursor=pointer]:
+          - /url: /disputes
+          - generic [ref=e51]: Open Disputes
+          - generic [ref=e52]: "0"
+          - generic [ref=e53]: $0 exposure
+      - generic [ref=e54]:
+        - link "0 Transactions" [ref=e55] [cursor=pointer]:
+          - /url: /transactions
+          - img [ref=e57]
+          - generic [ref=e59]:
+            - generic [ref=e60]: "0"
+            - generic [ref=e61]: Transactions
+        - link "0 High-risk Risk ≥ 70" [ref=e62] [cursor=pointer]:
+          - /url: /transactions
+          - img [ref=e64]
+          - generic [ref=e66]:
+            - generic [ref=e67]: "0"
+            - generic [ref=e68]: High-risk
+            - generic [ref=e69]: Risk ≥ 70
+        - link "0 Merchants" [ref=e70] [cursor=pointer]:
+          - /url: /merchants
+          - img [ref=e72]
+          - generic [ref=e74]:
+            - generic [ref=e75]: "0"
+            - generic [ref=e76]: Merchants
+        - link "0 Cardholders" [ref=e77] [cursor=pointer]:
+          - /url: /cardholders
+          - img [ref=e79]
+          - generic [ref=e81]:
+            - generic [ref=e82]: "0"
+            - generic [ref=e83]: Cardholders
+        - link "0 Cards" [ref=e84] [cursor=pointer]:
+          - /url: /cards
+          - img [ref=e86]
+          - generic [ref=e88]:
+            - generic [ref=e89]: "0"
+            - generic [ref=e90]: Cards
+        - link "0 Issuers" [ref=e91] [cursor=pointer]:
+          - /url: /issuers
+          - img [ref=e93]
+          - generic [ref=e95]:
+            - generic [ref=e96]: "0"
+            - generic [ref=e97]: Issuers
+      - generic [ref=e98]:
+        - generic [ref=e99]:
+          - generic [ref=e100]:
+            - generic [ref=e101]:
+              - heading "Daily Volume" [level=2] [ref=e102]
+              - paragraph [ref=e103]: USD-equivalent · last 0 active days
+            - link "View all →" [ref=e104] [cursor=pointer]:
+              - /url: /transactions
+          - generic [ref=e105]: No data
+        - generic [ref=e106]:
+          - heading "Status Breakdown" [level=2] [ref=e107]
+          - paragraph [ref=e108]: 0 transactions
+          - list [ref=e110]:
+            - listitem [ref=e111]:
+              - generic [ref=e114]: settled
+              - generic [ref=e115]:
+                - text: "0"
+                - generic [ref=e116]: (0.0%)
+            - listitem [ref=e117]:
+              - generic [ref=e120]: approved
+              - generic [ref=e121]:
+                - text: "0"
+                - generic [ref=e122]: (0.0%)
+            - listitem [ref=e123]:
+              - generic [ref=e126]: pending
+              - generic [ref=e127]:
+                - text: "0"
+                - generic [ref=e128]: (0.0%)
+            - listitem [ref=e129]:
+              - generic [ref=e132]: declined
+              - generic [ref=e133]:
+                - text: "0"
+                - generic [ref=e134]: (0.0%)
+            - listitem [ref=e135]:
+              - generic [ref=e138]: reversed
+              - generic [ref=e139]:
+                - text: "0"
+                - generic [ref=e140]: (0.0%)
+      - generic [ref=e141]:
+        - generic [ref=e142]:
+          - generic [ref=e143]:
+            - heading "Recent Transactions" [level=2] [ref=e144]
+            - link "See all →" [ref=e145] [cursor=pointer]:
+              - /url: /transactions
+          - table [ref=e147]:
+            - rowgroup [ref=e148]:
+              - row "Txn Merchant Amount Status Risk" [ref=e149]:
+                - columnheader "Txn" [ref=e150]
+                - columnheader "Merchant" [ref=e151]
+                - columnheader "Amount" [ref=e152]
+                - columnheader "Status" [ref=e153]
+                - columnheader "Risk" [ref=e154]
+            - rowgroup
+        - generic [ref=e155]:
+          - heading "Top Merchants" [level=2] [ref=e156]
+          - paragraph [ref=e157]: By gross volume (USD-eq)
+          - list [ref=e158]:
+            - listitem [ref=e159]: No merchant activity yet.
+      - generic [ref=e160]:
+        - heading "Quick Navigation" [level=2] [ref=e161]
+        - generic [ref=e162]:
+          - link "Transactions Search & filter" [ref=e163] [cursor=pointer]:
+            - /url: /transactions
+            - generic [ref=e164]: Transactions
+            - generic [ref=e165]: Search & filter
+          - link "Disputes Resolve cases" [ref=e166] [cursor=pointer]:
+            - /url: /disputes
+            - generic [ref=e167]: Disputes
+            - generic [ref=e168]: Resolve cases
+          - link "Settlements Issuer batches" [ref=e169] [cursor=pointer]:
+            - /url: /settlements
+            - generic [ref=e170]: Settlements
+            - generic [ref=e171]: Issuer batches
+          - link "Merchants MCC registry" [ref=e172] [cursor=pointer]:
+            - /url: /merchants
+            - generic [ref=e173]: Merchants
+            - generic [ref=e174]: MCC registry
+          - link "Cards Status & limits" [ref=e175] [cursor=pointer]:
+            - /url: /cards
+            - generic [ref=e176]: Cards
+            - generic [ref=e177]: Status & limits
+          - link "Issuers Partner banks" [ref=e178] [cursor=pointer]:
+            - /url: /issuers
+            - generic [ref=e179]: Issuers
+            - generic [ref=e180]: Partner banks
+  - contentinfo [ref=e181]:
+    - generic [ref=e182]:
+      - generic [ref=e183]: PayFlow Network
+      - generic [ref=e184]: Payment Network Operations Platform — Demo Environment
+      - generic [ref=e185]: © 2026 PayFlow Network. All rights reserved.

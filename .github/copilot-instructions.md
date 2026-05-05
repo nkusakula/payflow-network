@@ -80,6 +80,15 @@ See [.github/instructions/api.instructions.md](.github/instructions/api.instruct
 
 Reference implementations: [api/src/routes/issuer.ts](api/src/routes/issuer.ts) · [api/src/routes/issuer.test.ts](api/src/routes/issuer.test.ts)
 
+### Cross-cutting instruction files (auto-applied)
+
+| File | Scope | Purpose |
+|---|---|---|
+| [security-and-owasp.instructions.md](.github/instructions/security-and-owasp.instructions.md) | `api/src/**`, `frontend/src/**` | OWASP Top 10 2025 secure coding standards |
+| [a11y.instructions.md](.github/instructions/a11y.instructions.md) | `frontend/src/**/*.{tsx,jsx,html,css}` | WCAG 2.2 AA accessibility standards |
+| [performance-optimization.instructions.md](.github/instructions/performance-optimization.instructions.md) | `frontend/src/**/*.{tsx,jsx,ts,css}` | Core Web Vitals (LCP, INP, CLS) standards |
+| [github-actions-ci-cd-best-practices.instructions.md](.github/instructions/github-actions-ci-cd-best-practices.instructions.md) | `.github/workflows/*.{yml,yaml}` | GitHub Actions CI/CD best practices (security, caching, matrices, deployments) |
+
 ### Adding New Entities
 Use `/add-entity` skill (`.github/skills/add-entity/SKILL.md`) for a guided step-by-step workflow. Manual steps:
 1. Model interface in `api/src/models/{entity}.ts` with Swagger schema
@@ -129,8 +138,9 @@ Agents should run `npm install` from the workspace root if dependencies are miss
 
 ## Workspace Skills
 
-Invoke with `/` prefix in chat:
+Skills are auto-invoked by the model when your request matches the skill's `description`. You don't need to type a slash command — describe your intent and the model loads the skill.
 
-| Skill | Trigger | Purpose |
+| Skill | Activates when you say… | Purpose |
 |---|---|---|
-| [add-entity](.github/skills/add-entity/SKILL.md) | `/add-entity` | Guided 7-step workflow to add a new payment entity (model, seed, route, frontend) |
+| [add-entity](.github/skills/add-entity/SKILL.md) | "add a new entity", "create a new resource type" | Guided 7-step workflow to add a new payment entity (model, seed, route, frontend) |
+| [payments-security-review](.github/skills/payments-security-review/SKILL.md) | "do a security review", "audit this route for vulnerabilities", "check for payment risks" | Multi-pass payments-domain security review with bundled threat catalogs and checklist under [`references/`](.github/skills/payments-security-review/references/) |

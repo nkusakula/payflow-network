@@ -1,0 +1,60 @@
+- generic [ref=e3]:
+  - navigation [ref=e4]:
+    - generic [ref=e6]:
+      - link "PF PayFlow Network" [ref=e7] [cursor=pointer]:
+        - /url: /
+        - generic [ref=e8]: PF
+        - text: PayFlow Network
+      - generic [ref=e9]:
+        - link "Dashboard" [ref=e10] [cursor=pointer]:
+          - /url: /
+        - link "Transactions" [active] [ref=e11] [cursor=pointer]:
+          - /url: /transactions
+        - link "Merchants" [ref=e12] [cursor=pointer]:
+          - /url: /merchants
+        - link "Cardholders" [ref=e13] [cursor=pointer]:
+          - /url: /cardholders
+        - link "Cards" [ref=e14] [cursor=pointer]:
+          - /url: /cards
+        - link "Issuers" [ref=e15] [cursor=pointer]:
+          - /url: /issuers
+        - link "Disputes" [ref=e16] [cursor=pointer]:
+          - /url: /disputes
+        - link "Settlements" [ref=e17] [cursor=pointer]:
+          - /url: /settlements
+      - button "Toggle theme" [ref=e19] [cursor=pointer]:
+        - img [ref=e20]
+  - main [ref=e22]:
+    - generic [ref=e186]:
+      - generic [ref=e188]:
+        - heading "Transactions" [level=1] [ref=e189]
+        - paragraph [ref=e190]: 0 total transactions
+      - generic [ref=e191]:
+        - textbox "Search by ID, card, merchant, auth code..." [ref=e192]
+        - combobox [ref=e193]:
+          - option "All Statuses" [selected]
+          - option "Pending"
+          - option "Approved"
+          - option "Declined"
+          - option "Reversed"
+          - option "Settled"
+      - table [ref=e196]:
+        - rowgroup [ref=e197]:
+          - row "ID Type Amount Status Risk Card Merchant Date Actions" [ref=e198]:
+            - columnheader "ID" [ref=e199]
+            - columnheader "Type" [ref=e200]
+            - columnheader "Amount" [ref=e201]
+            - columnheader "Status" [ref=e202]
+            - columnheader "Risk" [ref=e203]
+            - columnheader "Card" [ref=e204]
+            - columnheader "Merchant" [ref=e205]
+            - columnheader "Date" [ref=e206]
+            - columnheader "Actions" [ref=e207]
+        - rowgroup [ref=e208]:
+          - row "No transactions found." [ref=e209]:
+            - cell "No transactions found." [ref=e210]
+  - contentinfo [ref=e181]:
+    - generic [ref=e182]:
+      - generic [ref=e183]: PayFlow Network
+      - generic [ref=e184]: Payment Network Operations Platform — Demo Environment
+      - generic [ref=e185]: © 2026 PayFlow Network. All rights reserved.

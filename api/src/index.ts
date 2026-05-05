@@ -49,6 +49,24 @@ const swaggerSpec = swaggerJsdoc(swaggerOptions);
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 app.get('/api-docs.json', (_req, res) => res.json(swaggerSpec));
 
+app.get('/', (_req, res) => {
+  res.json({
+    service: 'payflow-api',
+    status: 'ok',
+    docs: '/api-docs',
+    health: '/health',
+    endpoints: [
+      '/api/issuers',
+      '/api/cardholders',
+      '/api/cards',
+      '/api/merchants',
+      '/api/transactions',
+      '/api/disputes',
+      '/api/settlements',
+    ],
+  });
+});
+
 // Routes
 app.use('/api/issuers', issuerRoutes);
 app.use('/api/cardholders', cardholderRoutes);
