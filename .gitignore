@@ -11,3 +11,6 @@ npm-debug.log*
 .vscode/
 .idea/
 *.tsbuildinfo
+
+# Playwright MCP browser session captures
+.playwright-mcp/
