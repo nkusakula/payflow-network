@@ -15,7 +15,7 @@ const ALLOWED_DISPUTE_STATUS_TRANSITIONS: Record<DisputeStatus, DisputeStatus[]>
   resolved_merchant: [],
   closed: [],
 };
-const DISPUTE_STATUSES_LIST = Object.keys(ALLOWED_DISPUTE_STATUS_TRANSITIONS).sort().join(', ');
+const VALID_DISPUTE_STATUSES = Object.keys(ALLOWED_DISPUTE_STATUS_TRANSITIONS).sort().join(', ');
 
 const TERMINAL_DISPUTE_STATUSES: ReadonlySet<DisputeStatus> = new Set([
   'resolved_cardholder',
@@ -130,7 +130,7 @@ router.put('/:id', (req: Request, res: Response) => {
   const statusFromBody = req.body.status;
   if (typeof statusFromBody !== 'undefined' && typeof statusFromBody !== 'string') {
     return res.status(400).json({
-      error: `Invalid dispute status payload type: expected string, received ${typeof statusFromBody}. Valid statuses are: ${DISPUTE_STATUSES_LIST}.`,
+      error: `Invalid dispute status payload type: expected string, received ${typeof statusFromBody}.`,
     });
   }
   const nextStatus = statusFromBody as DisputeStatus | undefined;
@@ -138,7 +138,7 @@ router.put('/:id', (req: Request, res: Response) => {
   if (typeof nextStatus !== 'undefined') {
     if (!(nextStatus in ALLOWED_DISPUTE_STATUS_TRANSITIONS)) {
       return res.status(400).json({
-        error: `Invalid dispute status: ${nextStatus}. Valid statuses are: ${DISPUTE_STATUSES_LIST}.`,
+        error: `Invalid dispute status: ${nextStatus}. Valid statuses are: ${VALID_DISPUTE_STATUSES}.`,
       });
     }
 
@@ -158,9 +158,10 @@ router.put('/:id', (req: Request, res: Response) => {
     typeof nextStatus !== 'undefined' &&
     nextStatus !== currentDispute.status &&
     TERMINAL_DISPUTE_STATUSES.has(nextStatus);
+  const { resolvedAt: _ignoredResolvedAt, ...updatableFields } = req.body as Partial<Dispute>;
   const updatedDispute: Dispute = {
     ...currentDispute,
-    ...req.body,
+    ...updatableFields,
     id: req.params.id,
     ...(shouldSetResolvedAt ? { resolvedAt: new Date().toISOString() } : {}),
   };

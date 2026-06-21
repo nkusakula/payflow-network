@@ -26,6 +26,7 @@ describe('PUT /api/disputes/:id status transitions', () => {
     expect(res.status).toBe(200);
     expect(res.body.status).toBe('resolved_cardholder');
     expect(res.body.resolvedAt).toBeTruthy();
+    expect(Number.isNaN(Date.parse(res.body.resolvedAt))).toBe(false);
   });
 
   it('rejects skipping required lifecycle steps', async () => {
@@ -53,5 +54,14 @@ describe('PUT /api/disputes/:id status transitions', () => {
 
     expect(res.status).toBe(400);
     expect(res.body.error).toContain('Invalid dispute status');
+  });
+
+  it('rejects non-string status payloads', async () => {
+    const res = await request(app)
+      .put('/api/disputes/DSP003')
+      .send({ status: 123 });
+
+    expect(res.status).toBe(400);
+    expect(res.body.error).toContain('Invalid dispute status payload type');
   });
 });
