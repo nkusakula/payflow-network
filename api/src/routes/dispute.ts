@@ -6,6 +6,21 @@ import { Dispute } from '../models/dispute';
 export { resetDisputes };
 
 const router = Router();
+type DisputeStatus = Dispute['status'];
+
+const ALLOWED_DISPUTE_STATUS_TRANSITIONS: Record<DisputeStatus, DisputeStatus[]> = {
+  open: ['under_review'],
+  under_review: ['resolved_cardholder', 'resolved_merchant', 'closed'],
+  resolved_cardholder: [],
+  resolved_merchant: [],
+  closed: [],
+};
+
+const TERMINAL_DISPUTE_STATUSES: ReadonlySet<DisputeStatus> = new Set([
+  'resolved_cardholder',
+  'resolved_merchant',
+  'closed',
+]);
 
 /**
  * @swagger
@@ -109,7 +124,38 @@ router.post('/', (req: Request, res: Response) => {
 router.put('/:id', (req: Request, res: Response) => {
   const index = disputes.findIndex((d) => d.id === req.params.id);
   if (index === -1) return res.status(404).json({ error: 'Dispute not found' });
-  disputes[index] = { ...disputes[index], ...req.body, id: req.params.id };
+
+  const currentDispute = disputes[index];
+  const nextStatus = req.body.status as DisputeStatus | undefined;
+
+  if (typeof nextStatus !== 'undefined') {
+    if (!(nextStatus in ALLOWED_DISPUTE_STATUS_TRANSITIONS)) {
+      return res.status(400).json({ error: `Invalid dispute status: ${String(nextStatus)}` });
+    }
+
+    if (nextStatus !== currentDispute.status) {
+      const allowedNextStatuses = ALLOWED_DISPUTE_STATUS_TRANSITIONS[currentDispute.status];
+      if (!allowedNextStatuses.includes(nextStatus)) {
+        const terminalStateMessage = TERMINAL_DISPUTE_STATUSES.has(currentDispute.status)
+          ? ' Terminal dispute states cannot transition.'
+          : '';
+        return res.status(409).json({
+          error: `Invalid dispute status transition from ${currentDispute.status} to ${nextStatus}.${terminalStateMessage}`.trim(),
+        });
+      }
+    }
+  }
+
+  const updatedDispute: Dispute = { ...currentDispute, ...req.body, id: req.params.id };
+  if (
+    typeof nextStatus !== 'undefined' &&
+    nextStatus !== currentDispute.status &&
+    TERMINAL_DISPUTE_STATUSES.has(nextStatus)
+  ) {
+    updatedDispute.resolvedAt = new Date().toISOString();
+  }
+
+  disputes[index] = updatedDispute;
   res.json(disputes[index]);
 });
 
