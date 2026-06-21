@@ -6,6 +6,22 @@ import { Dispute } from '../models/dispute';
 export { resetDisputes };
 
 const router = Router();
+type DisputeStatus = Dispute['status'];
+
+const ALLOWED_DISPUTE_STATUS_TRANSITIONS: Record<DisputeStatus, DisputeStatus[]> = {
+  open: ['under_review'],
+  under_review: ['resolved_cardholder', 'resolved_merchant', 'closed'],
+  resolved_cardholder: [],
+  resolved_merchant: [],
+  closed: [],
+};
+const VALID_DISPUTE_STATUSES = Object.keys(ALLOWED_DISPUTE_STATUS_TRANSITIONS).sort().join(', ');
+
+const TERMINAL_DISPUTE_STATUSES: ReadonlySet<DisputeStatus> = new Set([
+  'resolved_cardholder',
+  'resolved_merchant',
+  'closed',
+]);
 
 /**
  * @swagger
@@ -109,7 +125,48 @@ router.post('/', (req: Request, res: Response) => {
 router.put('/:id', (req: Request, res: Response) => {
   const index = disputes.findIndex((d) => d.id === req.params.id);
   if (index === -1) return res.status(404).json({ error: 'Dispute not found' });
-  disputes[index] = { ...disputes[index], ...req.body, id: req.params.id };
+
+  const currentDispute = disputes[index];
+  const statusFromBody = req.body.status;
+  if (typeof statusFromBody !== 'undefined' && typeof statusFromBody !== 'string') {
+    return res.status(400).json({
+      error: `Invalid dispute status payload type: expected string, received ${typeof statusFromBody}.`,
+    });
+  }
+  const nextStatus = statusFromBody as DisputeStatus | undefined;
+
+  if (typeof nextStatus !== 'undefined') {
+    if (!(nextStatus in ALLOWED_DISPUTE_STATUS_TRANSITIONS)) {
+      return res.status(400).json({
+        error: `Invalid dispute status: ${nextStatus}. Valid statuses are: ${VALID_DISPUTE_STATUSES}.`,
+      });
+    }
+
+    if (nextStatus !== currentDispute.status) {
+      const allowedNextStatuses = ALLOWED_DISPUTE_STATUS_TRANSITIONS[currentDispute.status];
+      if (!allowedNextStatuses.includes(nextStatus)) {
+        return res.status(409).json({
+          error: TERMINAL_DISPUTE_STATUSES.has(currentDispute.status)
+            ? `Invalid dispute status transition from ${currentDispute.status} to ${nextStatus}. Terminal dispute states cannot transition.`
+            : `Invalid dispute status transition from ${currentDispute.status} to ${nextStatus}. Valid transitions: ${allowedNextStatuses.join(', ')}.`,
+        });
+      }
+    }
+  }
+
+  const shouldSetResolvedAt =
+    typeof nextStatus !== 'undefined' &&
+    nextStatus !== currentDispute.status &&
+    TERMINAL_DISPUTE_STATUSES.has(nextStatus);
+  const { resolvedAt: _ignoredResolvedAt, ...updatableFields } = req.body as Partial<Dispute>;
+  const updatedDispute: Dispute = {
+    ...currentDispute,
+    ...updatableFields,
+    id: req.params.id,
+    ...(shouldSetResolvedAt ? { resolvedAt: new Date().toISOString() } : {}),
+  };
+
+  disputes[index] = updatedDispute;
   res.json(disputes[index]);
 });
 
