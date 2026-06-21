@@ -15,7 +15,7 @@ const ALLOWED_DISPUTE_STATUS_TRANSITIONS: Record<DisputeStatus, DisputeStatus[]>
   resolved_merchant: [],
   closed: [],
 };
-const DISPUTE_STATUSES_LIST = Object.keys(ALLOWED_DISPUTE_STATUS_TRANSITIONS).join(', ');
+const DISPUTE_STATUSES_LIST = Object.keys(ALLOWED_DISPUTE_STATUS_TRANSITIONS).sort().join(', ');
 
 const TERMINAL_DISPUTE_STATUSES: ReadonlySet<DisputeStatus> = new Set([
   'resolved_cardholder',
@@ -130,7 +130,7 @@ router.put('/:id', (req: Request, res: Response) => {
   const statusFromBody = req.body.status;
   if (typeof statusFromBody !== 'undefined' && typeof statusFromBody !== 'string') {
     return res.status(400).json({
-      error: `Invalid dispute status payload type. Valid statuses are: ${DISPUTE_STATUSES_LIST}.`,
+      error: `Invalid dispute status payload type: expected string, received ${typeof statusFromBody}. Valid statuses are: ${DISPUTE_STATUSES_LIST}.`,
     });
   }
   const nextStatus = statusFromBody as DisputeStatus | undefined;
@@ -148,7 +148,7 @@ router.put('/:id', (req: Request, res: Response) => {
         return res.status(409).json({
           error: TERMINAL_DISPUTE_STATUSES.has(currentDispute.status)
             ? `Invalid dispute status transition from ${currentDispute.status} to ${nextStatus}. Terminal dispute states cannot transition.`
-            : `Invalid dispute status transition from ${currentDispute.status} to ${nextStatus}.`,
+            : `Invalid dispute status transition from ${currentDispute.status} to ${nextStatus}. Valid transitions: ${allowedNextStatuses.join(', ')}.`,
         });
       }
     }
