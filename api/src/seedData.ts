@@ -142,5 +142,6 @@ export function resetCardholders() { cardholders = [...cardholders]; }
 export function resetCards() { cards = [...cards]; }
 export function resetMerchants() { merchants = [...merchants]; }
 export function resetTransactions() { transactions = [...transactions]; }
-export function resetDisputes() { disputes = [...disputes]; }
+const originalDisputes: Dispute[] = disputes.map((d) => ({ ...d }));
+export function resetDisputes() { disputes = originalDisputes.map((d) => ({ ...d })); }
 export function resetSettlements() { settlements = [...settlements]; }
