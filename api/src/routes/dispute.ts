@@ -15,6 +15,7 @@ const ALLOWED_DISPUTE_STATUS_TRANSITIONS: Record<DisputeStatus, DisputeStatus[]>
   resolved_merchant: [],
   closed: [],
 };
+const VALID_DISPUTE_STATUSES = Object.keys(ALLOWED_DISPUTE_STATUS_TRANSITIONS).join(', ');
 
 const TERMINAL_DISPUTE_STATUSES: ReadonlySet<DisputeStatus> = new Set([
   'resolved_cardholder',
@@ -130,30 +131,33 @@ router.put('/:id', (req: Request, res: Response) => {
 
   if (typeof nextStatus !== 'undefined') {
     if (!(nextStatus in ALLOWED_DISPUTE_STATUS_TRANSITIONS)) {
-      return res.status(400).json({ error: `Invalid dispute status: ${String(nextStatus)}` });
+      return res.status(400).json({
+        error: `Invalid dispute status: ${String(nextStatus)}. Valid statuses are: ${VALID_DISPUTE_STATUSES}.`,
+      });
     }
 
     if (nextStatus !== currentDispute.status) {
       const allowedNextStatuses = ALLOWED_DISPUTE_STATUS_TRANSITIONS[currentDispute.status];
       if (!allowedNextStatuses.includes(nextStatus)) {
-        const terminalStateMessage = TERMINAL_DISPUTE_STATUSES.has(currentDispute.status)
-          ? ' Terminal dispute states cannot transition.'
-          : '';
         return res.status(409).json({
-          error: `Invalid dispute status transition from ${currentDispute.status} to ${nextStatus}.${terminalStateMessage}`.trim(),
+          error: TERMINAL_DISPUTE_STATUSES.has(currentDispute.status)
+            ? `Invalid dispute status transition from ${currentDispute.status} to ${nextStatus}. Terminal dispute states cannot transition.`
+            : `Invalid dispute status transition from ${currentDispute.status} to ${nextStatus}.`,
         });
       }
     }
   }
 
-  const updatedDispute: Dispute = { ...currentDispute, ...req.body, id: req.params.id };
-  if (
+  const shouldSetResolvedAt =
     typeof nextStatus !== 'undefined' &&
     nextStatus !== currentDispute.status &&
-    TERMINAL_DISPUTE_STATUSES.has(nextStatus)
-  ) {
-    updatedDispute.resolvedAt = new Date().toISOString();
-  }
+    TERMINAL_DISPUTE_STATUSES.has(nextStatus);
+  const updatedDispute: Dispute = {
+    ...currentDispute,
+    ...req.body,
+    id: req.params.id,
+    ...(shouldSetResolvedAt ? { resolvedAt: new Date().toISOString() } : {}),
+  };
 
   disputes[index] = updatedDispute;
   res.json(disputes[index]);
