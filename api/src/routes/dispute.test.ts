@@ -1,7 +1,7 @@
 import { describe, it, expect, beforeEach } from 'vitest';
 import request from 'supertest';
 import app from '../index';
-import { resetDisputes } from '../seedData';
+import { resetDisputes } from './dispute';
 
 beforeEach(() => {
   resetDisputes();
