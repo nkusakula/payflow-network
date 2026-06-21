@@ -3,11 +3,11 @@ import request from 'supertest';
 import app from '../index';
 import { resetDisputes } from './dispute';
 
-beforeEach(() => {
-  resetDisputes();
-});
-
 describe('PUT /api/disputes/:id status transitions', () => {
+  beforeEach(() => {
+    resetDisputes();
+  });
+
   it('allows a legal transition from open to under_review', async () => {
     const res = await request(app)
       .put('/api/disputes/DSP003')

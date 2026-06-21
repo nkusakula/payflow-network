@@ -15,7 +15,7 @@ const ALLOWED_DISPUTE_STATUS_TRANSITIONS: Record<DisputeStatus, DisputeStatus[]>
   resolved_merchant: [],
   closed: [],
 };
-const VALID_DISPUTE_STATUSES = Object.keys(ALLOWED_DISPUTE_STATUS_TRANSITIONS).join(', ');
+const DISPUTE_STATUSES_LIST = Object.keys(ALLOWED_DISPUTE_STATUS_TRANSITIONS).join(', ');
 
 const TERMINAL_DISPUTE_STATUSES: ReadonlySet<DisputeStatus> = new Set([
   'resolved_cardholder',
@@ -127,12 +127,18 @@ router.put('/:id', (req: Request, res: Response) => {
   if (index === -1) return res.status(404).json({ error: 'Dispute not found' });
 
   const currentDispute = disputes[index];
-  const nextStatus = req.body.status as DisputeStatus | undefined;
+  const statusFromBody = req.body.status;
+  if (typeof statusFromBody !== 'undefined' && typeof statusFromBody !== 'string') {
+    return res.status(400).json({
+      error: `Invalid dispute status payload type. Valid statuses are: ${DISPUTE_STATUSES_LIST}.`,
+    });
+  }
+  const nextStatus = statusFromBody as DisputeStatus | undefined;
 
   if (typeof nextStatus !== 'undefined') {
     if (!(nextStatus in ALLOWED_DISPUTE_STATUS_TRANSITIONS)) {
       return res.status(400).json({
-        error: `Invalid dispute status: ${String(nextStatus)}. Valid statuses are: ${VALID_DISPUTE_STATUSES}.`,
+        error: `Invalid dispute status: ${nextStatus}. Valid statuses are: ${DISPUTE_STATUSES_LIST}.`,
       });
     }
 
